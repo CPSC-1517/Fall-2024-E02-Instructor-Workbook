@@ -1,5 +1,3 @@
-# Basic Starter Kit
+#CPSC 1517 - Fall 2024 Instructor Example Repo
 
-## Owner your name
-
-alter this statement to indicate the usage of this repository
+## Tina Caron
