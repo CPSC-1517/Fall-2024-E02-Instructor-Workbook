@@ -2,6 +2,6 @@
 {
     public class Bob
     {
-        adsfsdghsaef SDf
+        
     }
 }
