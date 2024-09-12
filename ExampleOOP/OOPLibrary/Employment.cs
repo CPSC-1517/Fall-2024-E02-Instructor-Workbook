@@ -66,7 +66,8 @@ namespace OOPLibrary
         //auto-implemented
             //Only the property, just get and set, no additional values needed!
             //Do not make a data member for an auto-implemented property!**
-        public SupervisoryLevel Level { get; set; }
+        //Can change to a private set which restricts changes to the property to methods or constructors within this class.
+        public SupervisoryLevel Level { get; private set; }
 
         //Will fix later - fully implement
         public DateTime StartDate { get; set; }
@@ -82,18 +83,37 @@ namespace OOPLibrary
             //We always set to the Properties, do not set ever directly to a data member (never ever ever)
             //We wrote business logic, don't ignore it by not using the property, that makes kitten's cry.
             Title = title;
-            Years = years;
             Level = level;
             StartDate = startDate;
-        }
 
+            //if the user does not provide a year, and it gets the default 0.0, then we want to calculate the years of employment.
+            if(years == 0.0)
+            {
+                TimeSpan days = DateTime.Today - startDate;
+                Years = Math.Round((days.Days / 365.25), 1);
+                
+            }
+            else
+            {
+                Years = years;
+            }
+        }
+        //Default Constructor, no parameters. We are just setting the values to default values of our choice.
         public Employment()
         {
-
+            Title = "unknown";
+            Level = SupervisoryLevel.TeamMember;
+            StartDate = DateTime.Today;
+            Years = 0.0;
         }
         #endregion
 
         #region Methods
+        //Methods can change our properties as well, again do not assign data from a method to a data member
+        public void SetEmploymentResponsibilityLevel(SupervisoryLevel level)
+        {
+            Level = level;
+        }
         #endregion
     }
 }
