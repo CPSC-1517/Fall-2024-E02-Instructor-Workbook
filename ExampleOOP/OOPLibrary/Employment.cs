@@ -82,6 +82,8 @@ namespace OOPLibrary
             }
         }
 
+        //read-only property!
+        //Has no set, only a get. Not added to the constructor, but test this returns the correct value in your unit tests for the constructor :)
         public double EmploymentYears
         {
             get 
@@ -156,6 +158,15 @@ namespace OOPLibrary
             TimeSpan span = DateTime.Today - startDate;
             Years = Math.Round((span.Days / 365.25), 1);
         }
+
+        //overriding (reprogramming) the ToString method that comes from the base C# class.
+        //Simplified expression for method by using the Lambda return =>
+            // Syntax is [accessor] [modifier if there is one] [return type] [method name and parameters] => [return value]
+        //Simple Example: 
+            //public int AddStuff(int a, int b) => a + b;
+        public override string ToString() => $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
+
+        
         #endregion
     }
 }

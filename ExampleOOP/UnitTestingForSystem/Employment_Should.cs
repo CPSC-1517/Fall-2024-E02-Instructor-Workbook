@@ -169,24 +169,24 @@ namespace UnitTestingForSystem
         }
 
 
-        //[Fact]
-        //public void Create_CSV_String()
-        //{
-        //    string Title = "SAS Lead";
-        //    SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
-        //    DateTime StartDate = new DateTime(2020, 10, 24);
-        //    TimeSpan days = DateTime.Today - StartDate;
-        //    double Years = Math.Round((days.Days / 365.2), 1);
-        //    Employment sut = new Employment(Title, Level, StartDate, Years);
-        //    string expectedCSV = $"SAS Lead,TeamLeader,Oct. 24 2020,{Years}";
+        [Fact]
+        public void Create_CSV_String()
+        {
+            string Title = "SAS Lead";
+            SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
+            DateTime StartDate = new DateTime(2020, 10, 24);
+            TimeSpan days = DateTime.Today - StartDate;
+            double Years = Math.Round((days.Days / 365.25), 1);
+            Employment sut = new Employment(Title, Level, StartDate, Years);
+            string expectedCSV = $"SAS Lead,TeamLeader,Oct. 24 2020,{Years}";
 
-        //    //When - Act execution
-        //    string actual = sut.ToString();
+            //When - Act execution
+            string actual = sut.ToString();
 
-        //    //Then - Assert check
-        //    actual.Should().Be(expectedCSV);
+            //Then - Assert check
+            actual.Should().Be(expectedCSV);
 
-        //}
+        }
 
 
         #endregion
