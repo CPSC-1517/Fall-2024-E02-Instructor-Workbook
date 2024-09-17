@@ -82,6 +82,15 @@ namespace OOPLibrary
             }
         }
 
+        public double EmploymentYears
+        {
+            get 
+            {
+                TimeSpan days = DateTime.Today - StartDate;
+                return Math.Round((days.Days / 365.25), 2);
+            }
+        }
+
         //auto-implemented
             //Only the property, just get and set, no additional values needed!
             //Do not make a data member for an auto-implemented property!**

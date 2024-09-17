@@ -17,6 +17,7 @@ namespace UnitTestingForSystem
             SupervisoryLevel expectedLevel = SupervisoryLevel.TeamMember;
             DateTime expectedStartDate = DateTime.Today;
             double expectedYears = 0;
+            double expectedEmploymentYears = 0;
 
             //When - Act execution
             Employment actual = new Employment();
@@ -26,6 +27,7 @@ namespace UnitTestingForSystem
             actual.Level.Should().Be(expectedLevel);
             actual.StartDate.Should().Be(expectedStartDate);
             actual.Years.Should().Be(expectedYears);
+            actual.EmploymentYears.Should().Be(expectedEmploymentYears);
         }
 
         [Fact]
@@ -36,6 +38,8 @@ namespace UnitTestingForSystem
             SupervisoryLevel expectedLevel = SupervisoryLevel.TeamLeader;
             DateTime expectedStartDate = new DateTime(2020, 10, 24);
             double expectedYears = 3.6;
+            TimeSpan days = DateTime.Today - expectedStartDate;
+            double expectedEmploymentYears = Math.Round((days.Days / 365.25), 2);
 
             //When - Act execution
             Employment actual = new Employment(expectedTitle, expectedLevel, expectedStartDate, expectedYears);
@@ -45,6 +49,7 @@ namespace UnitTestingForSystem
             actual.Level.Should().Be(expectedLevel);
             actual.StartDate.Should().Be(expectedStartDate);
             actual.Years.Should().Be(expectedYears);
+            actual.EmploymentYears.Should().Be(expectedEmploymentYears);
         }
 
         //Depending on whether you adjusted the years when the default for years parameter
@@ -61,6 +66,7 @@ namespace UnitTestingForSystem
 
             TimeSpan days = DateTime.Today - expectedStartDate;
             double expectedYears = Math.Round((days.Days / 365.25), 1);
+            double expectedEmploymentYears = Math.Round((days.Days / 365.25), 2);
 
             //When - Act execution
             Employment actual = new Employment(expectedTitle, expectedLevel, expectedStartDate);
@@ -70,6 +76,7 @@ namespace UnitTestingForSystem
             actual.Level.Should().Be(expectedLevel);
             actual.StartDate.Should().Be(expectedStartDate);
             actual.Years.Should().Be(expectedYears);
+            actual.EmploymentYears.Should().Be(expectedEmploymentYears);
         }
 
         [Fact]
@@ -80,6 +87,8 @@ namespace UnitTestingForSystem
             SupervisoryLevel level = SupervisoryLevel.TeamLeader;
             DateTime startDate = DateTime.Today;
             double years = 0.0;
+            TimeSpan days = DateTime.Today - startDate;
+            double expectedEmploymentYears = Math.Round((days.Days / 365.25), 2);
 
             //Checks
             double expectedYears = 0.0;
@@ -89,6 +98,7 @@ namespace UnitTestingForSystem
 
             //Then - Assertions checks
             action.Years.Should().Be(expectedYears);
+            action.EmploymentYears.Should().Be(expectedEmploymentYears);
         }
 
         [Fact]
