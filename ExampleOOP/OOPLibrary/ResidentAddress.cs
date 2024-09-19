@@ -11,5 +11,8 @@
         //This method of defining a record acts as the greedy Constructor
         //takes in the parameter list, no other option
         //All properties in this case are immutable (cannot be changed)
+
+        //We can add a override for the ToString method for a record :)
+        public override string ToString() => $"{Number},{Street},{City},{Region},{PostalCode}";
     }
 }

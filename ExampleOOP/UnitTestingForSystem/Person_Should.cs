@@ -14,6 +14,8 @@ namespace UnitTestingForSystem
         //[InlineData(...)]
 
         //Test our Constructor(s)
+
+        //If a default exists, test that for sure and check that the default values are set properly.
         [Fact]
         public void Create_Instance_Using_Default_Constructor()
         {
@@ -29,12 +31,97 @@ namespace UnitTestingForSystem
             sut.FirstName.Should().Be(expectedFirstName);
             sut.LastName.Should().Be(expectedLastName);
             sut.ResidentAddress.Should().BeNull();
-            sut.Employments.Count.Should().Be(0);
+            sut.Positions.Count.Should().Be(0);
             sut.FullName.Should().Be($"{expectedFirstName} {expectedLastName}");
+        }
+
+        //Greedy or Overloaded Constructors (in this class - greedy constructors)
+
+        [Fact]
+        public void Create_Instance_Using_Greedy_Constructor_With_Positions()
+        {
+            //Expectations and Arrangement
+            string expectedFirstName = "Bob";
+            string expectedLastName = "Frank";
+            ResidentAddress expectedResidentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+            List<Employment> positions =
+            [
+                new Employment("Random", SupervisoryLevel.TeamLeader, DateTime.Today),
+                new Employment("Title2", SupervisoryLevel.DepartmentHead, DateTime.Parse("2016/07/28"))
+            ];
+
+            //Actions
+            Person sut = new(expectedFirstName, expectedLastName, positions, expectedResidentAddress);
+
+            //Assertions
+            sut.FirstName.Should().Be(expectedFirstName);
+            sut.LastName.Should().Be(expectedLastName);
+            sut.ResidentAddress.Should().Be(expectedResidentAddress);
+            //Check that the count of the collection matches the count of what we gave it
+            sut.Positions.Should().HaveCount(positions.Count);
+            sut.FullName.Should().Be($"{expectedFirstName} {expectedLastName}");
+        }
+
+        //Testing providing a null to the Collection
+            //Testing that we don't get a null reference error and we handled it in the constructor.
+        [Fact] public void Create_Instance_With_Greedy_Constructor_Without_Position()
+        {
+            //Expectations and Arrangement
+            string expectedFirstName = "Bob";
+            string expectedLastName = "Frank";
+            ResidentAddress expectedResidentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            //Action
+            //Providing a null for the Collection (List of Employment)
+            Person sut = new(expectedFirstName, expectedLastName, null, expectedResidentAddress);
+
+            //Assertion
+            sut.FirstName.Should().Be(expectedFirstName);
+            sut.LastName.Should().Be(expectedLastName);
+            sut.ResidentAddress.Should().Be(expectedResidentAddress);
+            //Making sure that there isn't a null set for the List - if the null is not handled in the constructor this will error and give a null reference error.
+            sut.Positions.Count.Should().Be(0);
+            sut.FullName.Should().Be($"{expectedFirstName} {expectedLastName}");
+        }
+
+        //Test our Methods
+        [Fact]
+        public void Create_CSV_String()
+        {
+            //Expectations and Arrangement
+            string expectedFirstName = "Bob";
+            string expectedLastName = "Frank";
+            ResidentAddress expectedResidentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            //Action
+            //Providing a null for the Collection (List of Employment)
+            Person sut = new(expectedFirstName, expectedLastName, null, expectedResidentAddress);
+
+            sut.ToString().Should().Be($"{expectedFirstName},{expectedLastName},{expectedResidentAddress.Number},{expectedResidentAddress.Street},{expectedResidentAddress.City},{expectedResidentAddress.Region},{expectedResidentAddress.PostalCode}");
         }
         #endregion
 
         #region Invalid Data Test
+        //Test the Constructor and provide bad values
+
+        //Testing a string will always be a theory test and always provided a null, an empty string, and whitespace.
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public void Create_New_Greedy_Instance_Throws_FirstName_Exception(string firstName)
+        {
+            //Expectations and Arrangement
+            //string expectedFirstName = "Bob";
+            string lastName = "Frank";
+            ResidentAddress residentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            //Action
+            Action action = () => new Person(firstName, lastName, null, residentAddress);
+
+            //Assurtion
+            action.Should().Throw<ArgumentNullException>();
+        }
         #endregion
     }
 }
