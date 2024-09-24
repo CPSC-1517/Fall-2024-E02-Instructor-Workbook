@@ -99,6 +99,36 @@ namespace UnitTestingForSystem
 
             sut.ToString().Should().Be($"{expectedFirstName},{expectedLastName},{expectedResidentAddress.Number},{expectedResidentAddress.Street},{expectedResidentAddress.City},{expectedResidentAddress.Region},{expectedResidentAddress.PostalCode}");
         }
+
+        [Fact]
+        public void Change_FirstName()
+        {
+            //Arrange
+            Person sut = MakePersonWithoutPositions();
+            string expectedFirstName = "Tina";
+
+            //Action
+            sut.FirstName = expectedFirstName;
+
+            //Assert
+            sut.FirstName.Should().Be(expectedFirstName);
+            sut.FullName.Should().Be($"{expectedFirstName} {sut.LastName}");
+        }
+
+        [Fact]
+        public void Add_Employment_No_Previous_Employment()
+        {
+            //Arrange
+            Person sut = MakePersonWithoutPositions();
+            Employment newEmployment = new("King Bob", SupervisoryLevel.Entry, DateTime.Today);
+
+            //Action
+            sut.AddEmployment(newEmployment);
+
+            //Assert
+            sut.Positions.Count.Should().Be(1);
+            //sut.Positions.Count.Should().Equals(1);
+        }
         #endregion
 
         #region Invalid Data Test
@@ -121,6 +151,65 @@ namespace UnitTestingForSystem
 
             //Assurtion
             action.Should().Throw<ArgumentNullException>();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("     ")]
+        public void Create_New_Greedy_Instance_Throws_LastName_Exception(string lastName)
+        {
+            //Expectations and Arrangement
+            string firstName = "Bob";
+            //string lastName = "Frank";
+            ResidentAddress residentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            //Action
+            Action action = () => new Person(firstName, lastName, null, residentAddress);
+
+            //Assurtion
+            action.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void AddEmployment_When_Position_Level_Same()
+        {
+            //Arrange
+            Person sut = MakePersonWithPositions();
+            Employment position = new Employment("Random 2", SupervisoryLevel.TeamLeader, DateTime.Today);
+
+            //Action
+            Action action = () => sut.AddEmployment(position);
+
+            //Assert
+            action.Should().Throw<ArgumentException>().WithMessage("*already has that level*");
+        }
+        #endregion
+
+        #region Utilities
+        private Person MakePersonWithoutPositions()
+        {
+            string firstName = "Bob";
+            string lastName = "Frank";
+            ResidentAddress residentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            return new Person(firstName, lastName, null, residentAddress);
+        }
+
+        private Person MakePersonWithPositions()
+        {
+            string firstName = "Bob";
+            string lastName = "Frank";
+            ResidentAddress residentAddress = new ResidentAddress(12, "Maple St.", "Edmonton", "AB", "T5T 5T5");
+
+            List<Employment> positions =
+            [
+                new Employment("Random", SupervisoryLevel.TeamLeader, DateTime.Today),
+                new Employment("Title2", SupervisoryLevel.DepartmentHead, DateTime.Parse("2016/07/28"))
+            ];
+
+
+            return new Person(firstName, lastName, positions, residentAddress);
         }
         #endregion
     }
