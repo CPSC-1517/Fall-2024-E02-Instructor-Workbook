@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OOPLibrary", "OOPLibrary\OO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestingForSystem", "UnitTestingForSystem\UnitTestingForSystem.csproj", "{270394E3-91E1-4E3C-A7B2-C942D1BF060B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPWebApp", "OOPWebApp\OOPWebApp.csproj", "{91DA3A46-7B66-425A-BA67-FFC2DBBBE49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OOPWebApp", "OOPWebApp\OOPWebApp.csproj", "{91DA3A46-7B66-425A-BA67-FFC2DBBBE49C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

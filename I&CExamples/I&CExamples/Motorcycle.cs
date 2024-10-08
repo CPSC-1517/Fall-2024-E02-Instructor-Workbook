@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace I_CExamples
 {
-    internal class Motorcycle
+    public class Motorcycle: Vehicle
     {
+        public Motorcycle()
+        {
+            Wheels = 2;
+        }
     }
 }
