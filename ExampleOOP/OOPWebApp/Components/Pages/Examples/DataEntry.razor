@@ -1,0 +1,36 @@
+﻿@page "/dataentry"
+<PageTitle>Data Entry</PageTitle>
+@rendermode InteractiveServer
+
+@* 
+    To reference our class library we need to add a @using statement
+    Remember to add a project reference as well!
+*@
+
+@using OOPLibrary
+
+<h3>Data Entry - Employment</h3>
+@* 
+    form area
+    standard html controls
+    using bootstrap for formatting
+    each control will be on a separate row
+*@
+
+<fieldset>
+    <legend>Employment Data</legend>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="employmentTitle" @bind="empTitle">
+                <label for="employmentTitle">Position Title</label>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" id="employmentDate" @bind="empStartDate" />
+                <label for="employmentDate">Start Date</label>
+            </div>
+        </div>
+    </div>
+</fieldset>
