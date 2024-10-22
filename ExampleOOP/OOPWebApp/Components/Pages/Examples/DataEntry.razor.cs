@@ -1,4 +1,8 @@
-﻿using OOPLibrary;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.JSInterop;
+using OOPLibrary;
+using System;
 
 namespace OOPWebApp.Components.Pages.Examples
 {
@@ -16,6 +20,11 @@ namespace OOPWebApp.Components.Pages.Examples
         private double empYears = 0.0;
         private Employment employment = null;
 
+        //injected service into your application
+        //injected services they need to be coded as properties, typically auto-implemented.
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+
         private void OnCollect()
         {
             feedback = string.Empty; //remove any old messages
@@ -26,11 +35,11 @@ namespace OOPWebApp.Components.Pages.Examples
                 // datatype/pattern
                 // range of value
             //Business Rules
-                // Title must present , must have at least character
+                // Title must present, must have at least character
                 // start date cannot be in the future
                 // years cannot be less than zero
 
-            if(string.IsNullOrEmpty(empTitle) )
+            if(string.IsNullOrWhiteSpace(empTitle) )
             {
                 errorMsgs.Add("Title is required.");
             }
@@ -47,7 +56,6 @@ namespace OOPWebApp.Components.Pages.Examples
             if (errorMsgs.Count == 0)
             {
                 //at this point the data is acceptable based off the form validation
-                feedback = $"Entered data is {empTitle}, {empStartDate}, {empLevel}, {empYears}";
 
                 //we can now process the data
 
@@ -57,9 +65,9 @@ namespace OOPWebApp.Components.Pages.Examples
                 // this normally means some type of try/catch processing
                 try
                 {
-                    //create an instance of tghe Employment class
+                    //create an instance of the Employment class
                     //  we will write this to a data file
-                    //remember that is an error occurs while creating your instance
+                    //remember that if an error occurs while creating your instance
                     //the instance will throw an exception!
 
                     employment = new Employment(empTitle, empLevel, empStartDate, empYears);
@@ -70,7 +78,10 @@ namespace OOPWebApp.Components.Pages.Examples
                     //  b) have a technique to write to a file
                     //      1) SteamReading/StreamWriter
                     //      2) use System.IO.File methods (this is simpler and we will use this)
-
+                    string fileName = @"Data/Employments.csv";
+                    string line = $"{employment}\n";
+                    File.AppendAllText(fileName, line);
+                    feedback = $"Entered Data: {empTitle}, {empStartDate.ToString("MMM dd yyyy")}, {empLevel}, {empYears} \n\nData saved to file.";
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -102,6 +113,24 @@ namespace OOPWebApp.Components.Pages.Examples
             while (ex.InnerException != null)
                 ex = ex.InnerException;
             return ex;
+        }
+        private async void ClearForm()
+        {
+            //issue as SimpleConsoleFormatterOptions prompt dialogue to the user to confirm the form clearing.
+            object[] messageLine = new object[] { "Clearing with lose all unsaved data. Are you sure you want to clear the form?" };
+            if(await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+            {
+                feedback = string.Empty;
+                errorMsgs.Clear();
+                empTitle = string.Empty;
+                empLevel = SupervisoryLevel.Entry;
+                empYears = 0;
+                empStartDate = DateTime.Today;
+                //If you are in an async function use
+                await InvokeAsync(StateHasChanged);
+                //If not in an async function use 
+                //StateHasChanged();
+            }
         }
     }
 }

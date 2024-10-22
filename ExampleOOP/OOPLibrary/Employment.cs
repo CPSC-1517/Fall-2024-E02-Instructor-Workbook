@@ -158,7 +158,7 @@
             // Syntax is [accessor] [modifier if there is one] [return type] [method name and parameters] => [return value]
         //Simple Example: 
             //public int AddStuff(int a, int b) => a + b;
-        public override string ToString() => $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
+        public override string ToString() => $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
 
         
         #endregion
