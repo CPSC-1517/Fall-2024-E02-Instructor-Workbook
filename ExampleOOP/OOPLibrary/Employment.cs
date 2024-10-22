@@ -160,7 +160,35 @@
             //public int AddStuff(int a, int b) => a + b;
         public override string ToString() => $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
 
-        
+        public static Employment Parse(string item)
+        {
+            string[] dataValue = item.Split(',');
+            if(dataValue.Length != 4)
+            {
+                throw new FormatException($"Invalid record format: {item}");
+            }
+            return new Employment(dataValue[0],
+                                  (SupervisoryLevel)Enum.Parse(typeof(SupervisoryLevel),dataValue[1]),
+                                    DateTime.Parse(dataValue[2]),
+                                    double.Parse(dataValue[3]));
+        }
+
+        //static int test;
+        //bool test2 = int.TryParse("3", out test);
+        public static bool TryParse(string item, out Employment result)
+        {
+            result = null;
+            try
+            {
+                //use code I've already written
+                result = Parse(item);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }
