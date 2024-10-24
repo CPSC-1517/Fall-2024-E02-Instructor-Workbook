@@ -47,6 +47,19 @@
 <fieldset>
     <legend>Employment Data</legend>
     <div class="row g-3">
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" id="Employee" @bind="employee">
+                    @foreach (var item in employees)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <label for="employmentLevel" class="form-label">Employee</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
         <div class="col ">
             <div class="form-floating mb-2">
                 <input type="text" class="form-control" id="employmentTitle" @bind="empTitle">
@@ -94,6 +107,17 @@
             <button class="btn btn-warning rounded-pill"
                     @onclick="ClearForm">
                 Clear Form
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn btn-warning rounded-pill">
+                <a href="employmentreport">Report Via Link</a>
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn btn-warning rounded-pill"
+                @onclick="GoToReport">
+                Report Via Method
             </button>
         </div>
     </div>

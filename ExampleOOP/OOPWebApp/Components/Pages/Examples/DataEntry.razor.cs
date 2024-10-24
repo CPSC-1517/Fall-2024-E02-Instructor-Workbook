@@ -11,6 +11,7 @@ namespace OOPWebApp.Components.Pages.Examples
     {
         private string feedback = string.Empty;
         private List<string> errorMsgs = [];
+        private List<string> employees = [];
 
         //Creating variables to store the form information
         //Match what is in the class for datatypes
@@ -19,12 +20,27 @@ namespace OOPWebApp.Components.Pages.Examples
         private SupervisoryLevel empLevel;
         private double empYears = 0.0;
         private Employment employment = null;
+        private string employee = string.Empty;
 
         //injected service into your application
         //injected services they need to be coded as properties, typically auto-implemented.
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
 
+        //Inject a service to navigate between pages
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        protected override void OnInitialized()
+        {
+            employees = new List<string>() 
+            {
+                "Tina Caron",
+                "Mike Stuparyk",
+                "Duerr Garcia",
+                "Fred Bob",
+            };
+        }
         private void OnCollect()
         {
             feedback = string.Empty; //remove any old messages
@@ -47,12 +63,10 @@ namespace OOPWebApp.Components.Pages.Examples
             {
                 errorMsgs.Add("Start Date cannot be in the future.");
             }
-
             if (empYears < 0.0)
             {
                 errorMsgs.Add("Years must be 0 or greater.");
             }
-
             if (errorMsgs.Count == 0)
             {
                 //at this point the data is acceptable based off the form validation
@@ -105,7 +119,10 @@ namespace OOPWebApp.Components.Pages.Examples
                 }
             }
         }
-
+        private void GoToReport()
+        {
+            NavigationManager.NavigateTo("employmentreport");
+        }
         private Exception GetInnerException(Exception ex)
         {
             //drill down into your Exception until there are no more inner exceptions

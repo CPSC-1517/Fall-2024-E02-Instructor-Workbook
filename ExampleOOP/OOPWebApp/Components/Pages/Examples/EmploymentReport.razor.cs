@@ -24,28 +24,28 @@ namespace OOPWebApp.Components.Pages.Examples
 
             string fileName = @"Data/Employments.csv";
             int lineCounter = 0;
-            try
+            string[] employmentData = File.ReadAllLines(fileName);
+            foreach(var line in employmentData)
             {
-                string[] employmentData = File.ReadAllLines(fileName);
-                foreach(var line in employmentData)
-                {
-                    lineCounter++;
-                    //if(Employment.TryParse(line, out Employment result))
-                    //{
-                    //    employments.Add(result);
-                    //}
-                    //else
-                    //{
-                    //    errorMsgs.Add($"Record Error: {lineCounter}: Unable to read record");
-                    //}
+                lineCounter++;
+                //if(Employment.TryParse(line, out Employment result))
+                //{
+                //    employments.Add(result);
+                //}
+                //else
+                //{
+                //    errorMsgs.Add($"Record Error: {lineCounter}: Unable to read record");
+                //}
 
-                    //Directly using Parse
+                //Directly using Parse
+                try
+                {
                     employments.Add(Employment.Parse(line));
                 }
-            }
-            catch(Exception ex)
-            {
-                errorMsgs.Add($"Record Error: {lineCounter}: {GetInnerException(ex).Message}");
+                catch(Exception ex)
+                {
+                    errorMsgs.Add($"Record Error: {lineCounter}: {GetInnerException(ex).Message}");
+                }
             }
         }
 
