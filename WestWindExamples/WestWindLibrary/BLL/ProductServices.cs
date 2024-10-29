@@ -1,4 +1,5 @@
-﻿using WestWindLibrary.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using WestWindLibrary.DAL;
 using WestWindLibrary.Entities;
 
 namespace WestWindLibrary.BLL
@@ -16,7 +17,9 @@ namespace WestWindLibrary.BLL
         #region Queries
         public List<Product> GetAllProducts()
         {
-            return _context.Products.ToList();
+            //Address is only Included as an example.
+            //Can only include a full entity!! DO NOT Try and include a field, this will break.
+            return _context.Products.Include(p=>p.Category).Include(p=>p.Supplier).ThenInclude(s=>s.Address).ToList();
         }
         #endregion
     }
