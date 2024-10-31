@@ -8,21 +8,49 @@ namespace WestWindWeb.Components.Pages
     {
         private List<Product> products = [];
         private List<string> errorMsgs = [];
+        private List<Category> categories = [];
+        private int categoryId;
+        private bool noProducts;
 
         [Inject]
         ProductServices _productServices { get; set; }
+        [Inject]
+        CategoryServices _categoryServices { get; set; }
 
         protected override void OnInitialized()
         {
+            //Everytime you connect or use one your services you need a try/catch
             try
             {
-                products = _productServices.GetAllProducts();
+                categories = _categoryServices.GetCategories();
+            }
+            catch(Exception ex)
+            {
+                errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
+            }
+            base.OnInitialized();
+        }
+        private void LoadProductsByCategory()
+        {
+            errorMsgs.Clear();
+            noProducts = false;
+
+            if(categoryId == 0)
+            {
+                errorMsgs.Add("Please select a category to search by.");
+            }
+            try
+            {
+                products = _productServices.GetProducts_ByCategory(categoryId);
+                if(products.Count == 0)
+                {
+                    noProducts = true;
+                }
             }
             catch (Exception ex)
             {
                 errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
             }
-            base.OnInitialized();
         }
         private Exception GetInnerException(Exception ex)
         {

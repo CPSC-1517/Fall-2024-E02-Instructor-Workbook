@@ -21,6 +21,10 @@ namespace WestWindLibrary.BLL
             //Can only include a full entity!! DO NOT Try and include a field, this will break.
             return _context.Products.Include(p=>p.Category).Include(p=>p.Supplier).ThenInclude(s=>s.Address).ToList();
         }
+        public List<Product> GetProducts_ByCategory(int categoryId)
+        {
+            return _context.Products.Where(x=>x.CategoryID.Equals(categoryId)).Include(p=>p.Category).Include(p=>p.Supplier).ToList();
+        }
         #endregion
     }
 }

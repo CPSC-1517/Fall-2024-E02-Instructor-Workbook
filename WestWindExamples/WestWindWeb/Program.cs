@@ -12,7 +12,9 @@ builder.Services.AddRazorComponents()
 //Injecting Services must comes before the builder is built!!
 builder.Services.AddDbContext<WestWindContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WWDB")));
 
+//Each services needs to be registered to be used!
 builder.Services.AddScoped<ProductServices>();
+builder.Services.AddScoped<CategoryServices>();
 
 var app = builder.Build();
 
