@@ -24,23 +24,33 @@ public partial class Product
     [StringLength(40, ErrorMessage = "{0} must be between {2} and {1} characters.", MinimumLength = 5)]
     public string ProductName { get; set; }
 
+    [Display(Name = "Supplier")]
     public int SupplierID { get; set; }
 
+    [Display(Name = "Category")]
     public int CategoryID { get; set; }
 
-    [Required]
-    [StringLength(20)]
+    [Display(Name = "Quantity Per Unit")]
+    [Required(ErrorMessage = "You must enter a {0}.")]
+    [StringLength(20, ErrorMessage = "{0} cannot be more than {1} characters.")]
     public string QuantityPerUnit { get; set; }
 
+    [Display(Name = "Minimum Order Quantity")]
     public short? MinimumOrderQuantity { get; set; }
 
+    [Display(Name = "Unit Price")]
+    [Required(ErrorMessage = "You must enter a {0}.")]
     [Column(TypeName = "money")]
+    [Range(0.0, double.MaxValue, ErrorMessage = "{0} must be greater than {1}.")]
     public decimal UnitPrice { get; set; }
 
+    [Display(Name = "Units On Order")]
+    [Range(0, int.MaxValue, ErrorMessage = "{0} must be greater than {1}.")]
     public int UnitsOnOrder { get; set; }
 
     public bool Discontinued { get; set; }
 
+    //No Data Annotation for Virtual Fields, please :)
     [ForeignKey("CategoryID")]
     [InverseProperty("Products")]
     public virtual Category Category { get; set; }

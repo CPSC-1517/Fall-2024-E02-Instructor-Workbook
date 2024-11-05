@@ -3,6 +3,11 @@
 
 <h3>Product CRUD</h3>
 
+@if(feedback.Length > 0)
+{
+    <p class="mb-2">@feedback</p>
+}
+
 <EditForm OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" Model="@product">
     <DataAnnotationsValidator />
     <div class="row">
@@ -11,12 +16,42 @@
             <InputText id="productName" class="form-control" @bind-Value="product.ProductName" />
             <ValidationMessage For="@(() => product.ProductName)" />
         </div>
+        <div class="col form-group">
+            <label for="unitPrice">Unit Price</label>
+            <InputNumber id="unitPrice" class="form-control" @bind-Value="product.UnitPrice" />
+            <ValidationMessage For="@(() => product.UnitPrice)" />
+        </div>
     </div>
     <div class="row">
         <div class="col form-group">
-            <label for="unitPrice">Unit Price</label>
-            <InputNumber id="unitPrice" class="form-control" @bind-Value="product.UnitPrice"  />
-            <ValidationMessage For="@(() => product.UnitPrice)" />
+            <label for="supplier">Supplier</label>
+            <InputSelect @bind-Value="product.SupplierID" class="form-select" id="supplier">
+                @foreach(var item in suppliers)
+                {
+                    <option value="@item.SupplierID">@item.CompanyName</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => product.SupplierID)" />
         </div>
+        <div class="col form-group">
+            <label for="category">Category</label>
+            <InputSelect @bind-Value="product.CategoryID" class="form-select" id="category">
+                @foreach (var item in categories)
+                {
+                    <option value="@item.CategoryID">@item.CategoryName</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => product.CategoryID)" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col form-group">
+            <label for="quantityPerUnit">Quantity Per Unit</label>
+            <InputText id="quantityPerUnit" class="form-control" @bind-Value="product.QuantityPerUnit" />
+            <ValidationMessage For="@(() => product.QuantityPerUnit)" />
+        </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </div>
 </EditForm>

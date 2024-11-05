@@ -15,6 +15,7 @@ builder.Services.AddDbContext<WestWindContext>(options => options.UseSqlServer(b
 //Each services needs to be registered to be used!
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<CategoryServices>();
+builder.Services.AddScoped<SupplierServices>();
 
 var app = builder.Build();
 

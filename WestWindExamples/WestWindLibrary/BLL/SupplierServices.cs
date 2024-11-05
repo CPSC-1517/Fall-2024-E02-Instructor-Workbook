@@ -8,19 +8,21 @@ using WestWindLibrary.Entities;
 
 namespace WestWindLibrary.BLL
 {
-    public class CategoryServices
+    public class SupplierServices
     {
         private WestWindContext _context;
 
-        public CategoryServices(WestWindContext context)
+        public SupplierServices(WestWindContext context)
         {
             _context = context;
         }
 
         #region Queries
-        public List<Category> GetCategories()
+        public List<Supplier> GetAllSuppliers()
         {
-            return _context.Categories.OrderBy(x => x.CategoryName).ToList();
+            //Order By just select a field to order
+            //Can chain then by with as many fields as we want
+            return _context.Suppliers.OrderBy(x => x.CompanyName).ThenBy(x => x.SupplierID).ToList();
         }
         #endregion
     }
