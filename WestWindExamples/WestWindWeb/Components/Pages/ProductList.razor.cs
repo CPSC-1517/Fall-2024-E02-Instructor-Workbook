@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using WestWindLibrary.BLL;
 using WestWindLibrary.Entities;
+using WWE = WestWindLibrary.Entities;
 
 namespace WestWindWeb.Components.Pages
 {
@@ -9,6 +10,7 @@ namespace WestWindWeb.Components.Pages
         private List<Product> products = [];
         private List<string> errorMsgs = [];
         private List<Category> categories = [];
+        private List<WWE.Program> programs = new List<WWE.Program>();
         private int categoryId;
         private bool noProducts;
 

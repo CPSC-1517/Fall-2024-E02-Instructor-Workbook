@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using WestWindLibrary.DAL;
 using WestWindLibrary.BLL;
 using WestWindWeb.Components;
+using WestWindLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//Extension Registration of Services - Using the Extension
+//var connectionString = builder.Configuration.GetConnectionString("WWDB");
+
+//builder.Services.WestWindExtensionServices(options => options.UseSqlServer(connectionString));
+
+//Registering Services directly in Program.cs
 //Injecting Services must comes before the builder is built!!
 builder.Services.AddDbContext<WestWindContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WWDB")));
 
