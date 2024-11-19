@@ -1,4 +1,11 @@
-﻿@page "/product"
+﻿@page "/product/{productId:int?}"
+<!--
+    is the page declatation we can add a parameter
+    they are always in { } to indicate the string substition
+    page directive with a parameter allows for a nullable int to be added to the url path
+    nullable because int? - the ? makes it nullable
+    any parameter in the page directive needs to have a parameter in the C#
+-->
 <PageTitle>Product CRUD</PageTitle>
 
 <h3>Product CRUD</h3>
@@ -69,6 +76,8 @@
         </div>
     </div>
     <div class="row">
-        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        <div class="col-2 mx-auto">
+            <button type="submit" class="btn btn-primary mt-2">@(isNew ? "Add Product" : "Update Product")</button>
+        </div>
     </div>
 </EditForm>

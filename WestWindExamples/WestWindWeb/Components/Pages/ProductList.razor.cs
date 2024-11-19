@@ -15,6 +15,8 @@ namespace WestWindWeb.Components.Pages
         private bool noProducts;
 
         [Inject]
+        NavigationManager _navigationManager { get; set; }
+        [Inject]
         ProductServices _productServices { get; set; }
         [Inject]
         CategoryServices _categoryServices { get; set; }
@@ -53,6 +55,11 @@ namespace WestWindWeb.Components.Pages
             {
                 errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
             }
+        }
+
+        private void EditProduct(int productId)
+        {
+            _navigationManager.NavigateTo($"/product/{productId}");
         }
         private Exception GetInnerException(Exception ex)
         {
