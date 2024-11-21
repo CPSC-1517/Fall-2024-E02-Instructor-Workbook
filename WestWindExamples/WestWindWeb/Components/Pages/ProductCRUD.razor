@@ -79,5 +79,12 @@
         <div class="col-2 mx-auto">
             <button type="submit" class="btn btn-primary mt-2">@(isNew ? "Add Product" : "Update Product")</button>
         </div>
+        @if(!isNew)
+        {
+            <!--This is not a submit button, that validates. We need onclick to call a method-->
+            <div class="col-2 mx-auto">
+                <button onclick="@(() => DeleteProduct())" type="button" class="btn btn-danger mt-2">Delete Product</button>
+            </div>
+        }
     </div>
 </EditForm>

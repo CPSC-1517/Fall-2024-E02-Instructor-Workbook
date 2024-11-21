@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using WestWindLibrary.BLL;
 using WestWindLibrary.Entities;
 
@@ -25,6 +26,10 @@ namespace WestWindWeb.Components.Pages
         CategoryServices categoryServices { get; set; }
         [Inject]
         ProductServices productServices { get; set; }
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        NavigationManager _navigationManager { get; set; }
 
         protected override void OnInitialized()
         {
@@ -85,7 +90,6 @@ namespace WestWindWeb.Components.Pages
 
             }
         }
-
         private void UpdateProduct()
         {
             try
@@ -105,7 +109,6 @@ namespace WestWindWeb.Components.Pages
                 errorMsgs.Add(GetInnerException(ex).Message);
             }
         }
-
         private void AddProduct()
         {
             try
@@ -119,12 +122,63 @@ namespace WestWindWeb.Components.Pages
                 errorMsgs.Add(GetInnerException(ex).Message);
             }
         }
-
         private void OnInvalidSubmit()
         {
             feedback = "This be borked!";
         }
-
+        private async Task DeleteProduct()
+        {
+            bool isDeleted = false;
+            object[] messageLine = new object[] {$"Are you sure you want to delete product {product.ProductName} (ID:{product.ProductID})?"};
+            if(await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+            {
+                try
+                {
+                    feedback = string.Empty;
+                    errorMsgs.Clear();
+                    int rowAffected = productServices.Product_PhysicalDelete(product);
+                    if (rowAffected == 0)
+                    {
+                        errorMsgs.Add($"Product {product.ProductName} (ID: {product.ProductID}) has not been deleted. Please check to see if the product still exists in the database.");
+                    }
+                    else
+                    {
+                        await JSRuntime.InvokeAsync<object>("alert",$"Product {product.ProductName} (ID: {product.ProductID}) has been successfully deleted.");
+                        isDeleted = true;
+                        //Option to stays on the same page and clear the product.
+                        _navigationManager.NavigateTo("/product", true);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    errorMsgs.Add(GetInnerException(ex).Message);
+                }
+                if(!isDeleted)
+                {
+                    errorMsgs.Clear();
+                    messageLine = new object[] { $"{product.ProductName} (ID:{product.ProductID}) could not be delete. Would you like to discontinue it?" };
+                    if (await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+                    {
+                        try
+                        {
+                            int rowsAfffected = productServices.Product_LogicalDelete(product);
+                            if (rowsAfffected == 0)
+                            {
+                                errorMsgs.Add($"Product {product.ProductName} (ID: {product.ProductID}) has not been discontinued. Please check to see if the product still exists in the database.");
+                            }
+                            else
+                            {
+                                feedback = $"Product {product.ProductName} (ID: {product.ProductID}) was successfully discontinued.";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            errorMsgs.Add(GetInnerException(ex).Message);
+                        }
+                    }
+                }
+            }
+        }
         private Exception GetInnerException(Exception ex)
         {
             while (ex.InnerException != null)
