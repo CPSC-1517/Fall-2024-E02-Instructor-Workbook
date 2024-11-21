@@ -61,6 +61,11 @@ namespace WestWindWeb.Components.Pages
         {
             _navigationManager.NavigateTo($"/product/{productId}");
         }
+
+        private void AddProduct()
+        {
+            _navigationManager.NavigateTo("/product");
+        }
         private Exception GetInnerException(Exception ex)
         {
             //drill down into your Exception until there are no more inner exceptions

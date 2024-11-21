@@ -25,9 +25,11 @@ public partial class Product
     public string ProductName { get; set; }
 
     [Display(Name = "Supplier")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a {0}.")]
     public int SupplierID { get; set; }
 
     [Display(Name = "Category")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a {0}.")]
     public int CategoryID { get; set; }
 
     [Display(Name = "Quantity Per Unit")]

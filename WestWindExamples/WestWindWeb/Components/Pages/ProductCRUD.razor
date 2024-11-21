@@ -30,7 +30,7 @@
     </div>
 }
 
-<EditForm OnValidSubmit="OnValidSubmit" Model="@product">
+<EditForm OnValidSubmit="OnValidSubmit" EditContext="editContext">
     <DataAnnotationsValidator />
     <div class="row">
         <div class="col form-group">
@@ -74,6 +74,11 @@
             <InputText id="quantityPerUnit" class="form-control" @bind-Value="product.QuantityPerUnit" />
             <ValidationMessage For="@(() => product.QuantityPerUnit)" />
         </div>
+        <div class="col form-group d-flex flex-wrap align-content-center">
+            <InputCheckbox id="discontinued" class="form-check-input" style="margin-right: 8px;" @bind-Value="product.Discontinued" onclick="return false;" />
+            <label for="discontinued" class="form-check-label">Discontinued</label>
+            <ValidationMessage For="@(() => product.Discontinued)" />
+        </div>
     </div>
     <div class="row">
         <div class="col-2 mx-auto">
@@ -85,6 +90,13 @@
             <div class="col-2 mx-auto">
                 <button onclick="@(() => DeleteProduct())" type="button" class="btn btn-danger mt-2">Delete Product</button>
             </div>
+            @if(product.Discontinued)
+            {
+                <div class="col-2 mx-auto">
+                    <button onclick="@(() => ReactivateProduct())" type="button" class="btn btn-success mt-2"> Reactivate Product</button>
+                </div>
+            }
+            
         }
     </div>
 </EditForm>

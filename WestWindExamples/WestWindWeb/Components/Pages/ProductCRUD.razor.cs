@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using WestWindLibrary.BLL;
 using WestWindLibrary.Entities;
@@ -14,6 +15,7 @@ namespace WestWindWeb.Components.Pages
         private List<Supplier> suppliers = [];
         private List<Category> categories = [];
         private bool isNew;
+        private EditContext editContext;
 
         //This parameter matches the parameter in our page directive
         //Must have the same datatype and name
@@ -54,6 +56,9 @@ namespace WestWindWeb.Components.Pages
                 {
                     isNew = true;
                 }
+
+                //Must pass the EditContext the model being used -- product
+                editContext = new EditContext(product);
             }
             catch (Exception ex)
             {
@@ -176,6 +181,33 @@ namespace WestWindWeb.Components.Pages
                             errorMsgs.Add(GetInnerException(ex).Message);
                         }
                     }
+                }
+            }
+        }
+        private void ReactivateProduct()
+        {
+            feedback = string.Empty;
+            errorMsgs.Clear();
+
+            if(editContext.Validate())
+            {
+                try
+                {
+                    product.Discontinued = false;
+                    int rowAffected = productServices.Product_UpdateProduct(product);
+                    if (rowAffected == 0)
+                    {
+                        errorMsgs.Add($"Product {product.ProductName} (ID: {product.ProductID}) has not been reactivated. Please check to see if the product still exists in the database.");
+                    }
+                    else
+                    {
+                        feedback = $"Product {product.ProductName} (ID: {product.ProductID}) has been successfully reactivated.";
+                        StateHasChanged();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMsgs.Add(GetInnerException(ex).Message);
                 }
             }
         }
