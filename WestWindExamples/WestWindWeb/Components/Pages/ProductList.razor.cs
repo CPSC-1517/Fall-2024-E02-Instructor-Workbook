@@ -10,9 +10,11 @@ namespace WestWindWeb.Components.Pages
         private List<Product> products = [];
         private List<string> errorMsgs = [];
         private List<Category> categories = [];
+        private List<Supplier> suppliers = [];
         private List<WWE.Program> programs = new List<WWE.Program>();
         private int categoryId;
         private bool noProducts;
+        private string productNameSearch = string.Empty;
 
         [Inject]
         NavigationManager _navigationManager { get; set; }
@@ -20,6 +22,8 @@ namespace WestWindWeb.Components.Pages
         ProductServices _productServices { get; set; }
         [Inject]
         CategoryServices _categoryServices { get; set; }
+        [Inject]
+        SupplierServices _supplierServices { get; set; }
 
         protected override void OnInitialized()
         {
@@ -27,6 +31,7 @@ namespace WestWindWeb.Components.Pages
             try
             {
                 categories = _categoryServices.GetCategories();
+                suppliers = _supplierServices.GetAllSuppliers();
             }
             catch(Exception ex)
             {
@@ -43,17 +48,46 @@ namespace WestWindWeb.Components.Pages
             {
                 errorMsgs.Add("Please select a category to search by.");
             }
-            try
+            else
             {
-                products = _productServices.GetProducts_ByCategory(categoryId);
-                if(products.Count == 0)
+                try
                 {
-                    noProducts = true;
+                    products = _productServices.GetAllProducts();
+                    if (products.Count == 0)
+                    {
+                        noProducts = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
                 }
             }
-            catch (Exception ex)
+        }
+
+        private void SearchProductsByName()
+        {
+            errorMsgs.Clear();
+            noProducts = false;
+
+            if(string.IsNullOrWhiteSpace(productNameSearch))
             {
-                errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
+                errorMsgs.Add("Please enter a full or partial name to search.");
+            }
+            else
+            {
+                try
+                {
+                    products = _productServices.GetProducts_ByName(productNameSearch);
+                    if (products.Count == 0)
+                    {
+                        noProducts = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMsgs.Add($"Data Loading Error: {GetInnerException(ex).Message}");
+                }
             }
         }
 

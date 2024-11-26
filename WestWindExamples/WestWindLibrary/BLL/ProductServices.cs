@@ -25,9 +25,16 @@ namespace WestWindLibrary.BLL
         }
         public List<Product> GetProducts_ByCategory(int categoryId)
         {
-            return _context.Products.Where(x=>x.CategoryID.Equals(categoryId)).Include(p=>p.Category).Include(p=>p.Supplier).ToList();
+            //Includes removed as an example, the supplier and category lists on the ProductList page supply the Product table values. Example for reference.
+            return _context.Products.Where(x=>x.CategoryID.Equals(categoryId)).ToList();
         }
+        public List<Product> GetProducts_ByName(string searchString)
+        {
+            //Business Rule Example: Match full OR partial string
+            return _context.Products.Where(x => x.ProductName.ToLower().Contains(searchString.ToLower())).Include(p => p.Category).Include(p => p.Supplier).ToList();
 
+            //For exact match we can use .Equals() ==, consider if you want them in the same case in this 'case'
+        }
         public Product GetProduct_ByProductId(int productId)
         {
             return _context.Products.Where(x => x.ProductID == productId).Include(p => p.Category).Include(p => p.Supplier).FirstOrDefault();

@@ -3,6 +3,8 @@ using WestWindLibrary.DAL;
 using WestWindLibrary.BLL;
 using WestWindWeb.Components;
 using WestWindLibrary;
+using FluentValidation;
+using WestWindLibrary.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,10 @@ builder.Services.AddDbContext<WestWindContext>(options => options.UseSqlServer(b
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<CategoryServices>();
 builder.Services.AddScoped<SupplierServices>();
+
+//Register a validator
+//Provide the Class to be validated to the IValidator, second parameter is the actually Validator Name
+builder.Services.AddTransient<IValidator<PersonExample>, PersonValidator>();
 
 var app = builder.Build();
 

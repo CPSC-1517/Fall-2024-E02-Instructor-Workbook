@@ -93,7 +93,7 @@
             @if(product.Discontinued)
             {
                 <div class="col-2 mx-auto">
-                    <button onclick="@(() => ReactivateProduct())" type="button" class="btn btn-success mt-2"> Reactivate Product</button>
+                    <button  @onclick="ReactivateProduct" type="button" class="btn btn-success mt-2"> Reactivate Product</button>
                 </div>
             }
             
