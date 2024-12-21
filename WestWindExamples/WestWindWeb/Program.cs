@@ -28,7 +28,7 @@ builder.Services.AddScoped<SupplierServices>();
 
 //Register a validator
 //Provide the Class to be validated to the IValidator, second parameter is the actually Validator Name
-builder.Services.AddTransient<IValidator<PersonExample>, PersonValidator>();
+//builder.Services.AddTransient<IValidator<PersonExample>, PersonValidator>();
 
 var app = builder.Build();
 
